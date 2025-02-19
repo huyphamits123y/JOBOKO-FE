@@ -23,7 +23,7 @@ export const loginUser = async (data) => {
 };
 export const SignUpUser = async (data) => {
     try {
-        const res = await axiosJWT.post('/api/v1/users/signup', data);
+        const res = await axiosJWT.post('/api/user/sign-up', data);
         return res.data;
     } catch (error) {
         console.error('Error logging in user:', error);
@@ -39,11 +39,11 @@ export const FindOneUser = async (id) => {
         throw error;
     }
 }
-export const getDetailsUser = async (access_token) => {
+export const getDetailsUser = async (id, access_token) => {
     try {
-        const res = await axiosJWT.get('/api/v1/users/profile', {
+        const res = await axiosJWT.get(`/api/user/get-details/${id}`, {
             headers: {
-                Authorization: `Bearer ${access_token}`,
+                token: `Bearer ${access_token}`,
 
             }
 

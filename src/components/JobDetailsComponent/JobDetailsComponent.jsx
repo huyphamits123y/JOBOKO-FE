@@ -1,9 +1,49 @@
-import React from "react";
-import { ApplyButton, BenefitItem, BenefitsList, Button, ButtonGroup, CompanyInfo, CompanyName, Container, Header, Icon, InfoGroup, JobContainer, JobDetails, JobHeader, JobInfo, JobItem, JobList, JobSectionTitle, JobStatus, JobTitle, List, ListItem, Location, Logo, MainContent, Section, SectionTitle, Sidebar, SidebarItem, SidebarText, SidebarTitle, Tab, Tabs } from "./style";
+import React, { useState } from "react";
+import {
+    ApplyButton, BenefitItem, BenefitsList, Button, ButtonGroup, CompanyInfo, CompanyName, Container, Header, Icon, InfoGroup, JobContainer, JobDetails, JobHeader, JobInfo, JobItem, JobList, JobSectionTitle, JobStatus, JobTitle, List, ListItem, Location, Logo, MainContent, Section, SectionTitle, Sidebar, SidebarItem, SidebarText, SidebarTitle, Tab, Tabs, Overlay,
+    Modal,
+    HeaderCV,
+    Content,
+    CVList,
+    CVItem,
+    Footer,
+    ButtonCV,
+    CreateCVForm,
+    Input,
+    FileUpload,
+    Title,
+} from "./style";
+import logo from '../Assets/logo.png';
 import mbbank from '../Assets/mbbank.png';
 const JobDetailsComponent = () => {
     const [activeTab, setActiveTab] = React.useState("details");
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [cvList, setCvList] = useState([
+        { id: 1, title: "CV Thực Tập Sinh", date: "15:38:53 10/1/2025" },
+        { id: 2, title: "CV FRONTEND DEVELOPER", date: "15:38:53 10/1/2025" },
+        { id: 3, title: "CV Thực Tập Sinh", date: "15:38:53 10/1/2025" },
+        { id: 4, title: "CV Software Engineer", date: "15:38:53 10/1/2025" },
+        { id: 5, title: "CV Software Engineer", date: "15:38:53 10/1/2025" },
+    ]);
+    const [isCreating, setIsCreating] = useState(false);
+    const [newCvTitle, setNewCvTitle] = useState("");
+    const [newCvFile, setNewCvFile] = useState(null);
 
+    const handleCreateCV = () => {
+        if (newCvTitle && newCvFile) {
+            setCvList([
+                ...cvList,
+                {
+                    id: cvList.length + 1,
+                    title: newCvTitle,
+                    date: new Date().toLocaleString(),
+                },
+            ]);
+            setIsCreating(false);
+            setNewCvTitle("");
+            setNewCvFile(null);
+        }
+    };
     return (
         <Container>
             <Header>
@@ -15,7 +55,72 @@ const JobDetailsComponent = () => {
                     <JobStatus>Hết hạn: Còn 25 ngày</JobStatus>
                 </JobInfo>
                 <ButtonGroup>
-                    <Button primary>Ứng tuyển</Button>
+                    <Button primary onClick={() => setIsModalOpen(true)}>Ứng tuyển</Button>
+                    {isModalOpen && (
+                        <Overlay>
+                            <Modal>
+                                <Header>
+                                    <img src={logo} alt="Logo" style={{ width: '70px' }} />
+                                    <h3>Thực tập sinh Marketing & truyền thông</h3>
+                                    <button onClick={() => setIsModalOpen(false)}>✖</button>
+                                </Header>
+                                <Content>
+                                    <Title>Chọn CV</Title>
+                                    <CVList>
+                                        {cvList.map((cv) => (
+                                            <CVItem key={cv.id}>
+                                                <input type="radio" name="cv" />
+                                                <span>{cv.title}</span>
+                                                <span>{cv.date}</span>
+                                            </CVItem>
+                                        ))}
+                                    </CVList>
+                                    <FileUpload>
+                                        <Button onClick={() => setIsCreating(true)}>Tạo bộ hồ sơ mới</Button>
+                                        <label>
+                                            Tải file từ máy tính
+                                            <input type="file" style={{ display: "none" }} />
+                                        </label>
+                                    </FileUpload>
+                                </Content>
+                                <Footer>
+                                    <Button>Apply với cover letter</Button>
+                                    <Button primary>Ứng tuyển ngay</Button>
+                                </Footer>
+                            </Modal>
+                        </Overlay>
+                    )}
+
+                    {isCreating && (
+                        <Overlay>
+                            <Modal>
+                                <Header>
+                                    <h3>Tạo bộ hồ sơ mới</h3>
+                                    <button onClick={() => setIsCreating(false)}>✖</button>
+                                </Header>
+                                <CreateCVForm>
+                                    <label>
+                                        Tiêu đề CV
+                                        <Input
+                                            type="text"
+                                            value={newCvTitle}
+                                            onChange={(e) => setNewCvTitle(e.target.value)}
+                                            placeholder="Nhập tiêu đề CV"
+                                        />
+                                    </label>
+                                    <label>
+                                        Tải file PDF
+                                        <Input
+                                            type="file"
+                                            accept="application/pdf"
+                                            onChange={(e) => setNewCvFile(e.target.files[0])}
+                                        />
+                                    </label>
+                                    <Button onClick={handleCreateCV}>Tạo CV</Button>
+                                </CreateCVForm>
+                            </Modal>
+                        </Overlay>
+                    )}
                     <Button>Lưu việc</Button>
                 </ButtonGroup>
             </Header>

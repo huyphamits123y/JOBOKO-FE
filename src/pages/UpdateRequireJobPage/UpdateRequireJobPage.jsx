@@ -7,33 +7,52 @@ import Select from 'react-select';
 import SearchComponent from "../../components/SearchComponent/SearchComponent";
 import { TiPhoneOutline } from "react-icons/ti";
 import { GoMail } from "react-icons/go";
+
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/slides/userSlide";
 const UpdateRequireJobPage = () => {
 
     const [activeTab, setActiveTab] = useState('desires');
-    const [industry, setIndustry] = useState(null);
-    const [title, setTitle] = useState(null);
-    const [location, setLocation] = useState(null);
-
+    const user = useSelector((state) => state?.user);
+    const [industry, setIndustry] = useState(user?.industry ? { value: user.industry, label: user.industry } : null);
+    const [title, setTitle] = useState(user?.title ? { value: user.title, label: user.title } : null);
+    const [location, setLocation] = useState(user?.location ? { value: user.location, label: user.location } : null);
+    const [salaryto, setsalaryto] = useState(user?.salaryto || 0);
+    const [salaryfrom, setsalaryfrom] = useState(user?.salaryfrom || 0);
+    const [desire, setdesire] = useState(user?.desire || '');
+    const dispatch = useDispatch();
     const industries = [
-        { label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
-        { value: 'as', label: 'coder' },
-        { value: 'am', label: 'marketing' },
+        { value: 'IT / Phần mềm / IOT / Điện tử viễn thông', label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
+        { value: 'Corder', label: 'Coder' },
+        { value: 'Marketing', label: 'Marketing' },
         // Add more options here
     ];
 
     const jobTitles = [
-        { value: 'intern', label: 'Thực tập sinh lập trình' },
-        { value: 'senior', label: ' senior NodeJS' },
-        { value: 'junior', label: 'junior Angular' },
+        { value: 'Thực tập sinh lập trình', label: 'Thực tập sinh lập trình' },
+        { value: 'senior NodeJS', label: 'senior NodeJS' },
+        { value: 'junior Angular', label: 'junior Angular' },
         // Add more options here
     ];
 
     const locations = [
-        { value: 'hcm', label: 'Hồ Chí Minh' },
-        { value: 'hn', label: 'Hà Nội' },
-        { value: 'hp', label: 'Hải Phòng' },
+        { value: 'Hồ Chí Minh', label: 'Hồ Chí Minh' },
+        { value: 'Hà Nội', label: 'Hà Nội' },
+        { value: 'Hải Phòng', label: 'Hải Phòng' },
         // Add more options here
     ];
+    const onChangeSalaryFrom = (e) => {
+        setsalaryfrom(e.target.value)
+    }
+    const onChangeSalaryTo = (e) => {
+        setsalaryto(e.target.value)
+    }
+    const onChangeDesire = (e) => {
+        setdesire(e.target.value)
+    }
+    const handleUpdateProfile = () => {
+        dispatch(updateUser({ ...user, industry: industry?.value, location: location?.value, title: title?.value, salaryto: salaryto, salaryfrom: salaryfrom, desire: desire }))
+    }
 
     return (
         <div>
@@ -86,18 +105,19 @@ const UpdateRequireJobPage = () => {
                 <FormFieldd>
                     <label>Mức lương (VND)</label>
                     <div style={{ display: 'flex', gap: '10px' }}>
-                        <input type="number" placeholder="Từ" />
-                        <input type="number" placeholder="Đến" />
+                        <input type="number" placeholder="Từ" value={salaryfrom} onChange={onChangeSalaryFrom} />
+                        <input type="number" placeholder="Đến" value={salaryto} onChange={onChangeSalaryTo} />
                     </div>
                 </FormFieldd>
 
                 <FormFieldd>
                     <label>Mong muốn của bạn</label>
-                    <textarea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." rows="4" />
+                    <textarea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." rows="4" onChange={onChangeDesire} value={desire} />
                 </FormFieldd>
 
+
                 {/* Save Button */}
-                <SaveButton>LƯU THÔNG TIN</SaveButton>
+                <SaveButton onClick={handleUpdateProfile}>LƯU THÔNG TIN</SaveButton>
             </Container>
             <SupportContainer>
                 <TitleOptions>HỖ TRỢ ỨNG VIÊN</TitleOptions>

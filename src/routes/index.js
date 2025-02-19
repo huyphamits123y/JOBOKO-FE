@@ -1,7 +1,11 @@
 import CompanyDetailsPage from '../pages/CompanyDetailsPage/CompanyDetailsPage'
+import FindJobPage from '../pages/FindJobPage/FindJobPage'
 import HomePage from '../pages/HomePage/HomePage'
+import JobByProvincePage from '../pages/JobByProvincePage/JobByProvincePage'
 import JobDetailsPage from '../pages/JobDetailsPage/JobDetailsPage'
+import ManagerCVPage from '../pages/ManagerCVPage/ManagerCVPage'
 import ManagerPage from '../pages/ManagerPage/ManagerPage'
+import ProfessionPage from '../pages/ProfessionPage/ProfessionPage'
 import ProfilePage from '../pages/ProfilePage/ProfilePage'
 import RecruitmentPage from '../pages/RecruitmentPage/RecruitmentPage'
 import SearchJobFieldPage from '../pages/SearchJobPage/SearchJobPage'
@@ -19,13 +23,13 @@ export const routes = [
 
     },
     {
-        path: '/signin',
+        path: '/sign-in',
         page: SignInPage,
 
 
     },
     {
-        path: '/signup',
+        path: '/sign-up',
         page: SignUpPage,
 
 
@@ -75,6 +79,30 @@ export const routes = [
     {
         path: '/recruitment',
         page: RecruitmentPage,
+
+
+    },
+    {
+        path: '/findjobpage',
+        page: FindJobPage,
+
+
+    },
+    {
+        path: '/jobbyprovincepage',
+        page: JobByProvincePage,
+
+
+    },
+    {
+        path: '/professionPage',
+        page: ProfessionPage,
+
+
+    },
+    {
+        path: '/managercvpage',
+        page: ManagerCVPage,
 
 
     },

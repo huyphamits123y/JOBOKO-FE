@@ -1,172 +1,103 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from 'react-select';
 import { Container, FormContainer, FormField, FormFieldd, FormGroup, Input, InputGroup, Label, RadioGroup, RadioInput, RadioLabel, SaveButton, Section, Tab, Textarea, TextArea, Title, ToggleContainer, ToggleLabel } from "./style";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import background1 from '../../components/Assets/background1.png';
 import FooterComponent from "../../components/FooterComponent/FooterComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/slides/userSlide";
 const ProfilePage = () => {
-    // return (
-    //     <div>
-    //         <HeaderComponent></HeaderComponent>
-    //         <Container>
-    //             <Title>Mong muốn của bạn</Title>
-    //             <FormGroup>
-    //                 <Label>Ngành nghề</Label>
-    //                 <Select multiple>
-    //                     <option>IT / Phần mềm / IOT / Điện tử viễn thông</option>
-    //                     <option>Ngành khác</option>
-    //                 </Select>
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Chức danh</Label>
-    //                 <Select multiple>
-    //                     <option>Thực tập sinh lập trình</option>
-    //                     <option>Vị trí khác</option>
-    //                 </Select>
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Địa điểm làm việc</Label>
-    //                 <Select multiple>
-    //                     <option>Hồ Chí Minh</option>
-    //                     <option>Hà Nội</option>
-    //                 </Select>
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Mức lương (VNĐ)</Label>
-    //                 <Input type="number" placeholder="0" /> Đến <Input type="number" placeholder="0" />
-    //             </FormGroup>
-    //             <FormGroup>
-    //                 <Label>Mong muốn của bạn</Label>
-    //                 <TextArea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." />
-    //             </FormGroup>
-    //             <ToggleContainer>
-    //                 <input type="checkbox" id="notify" />
-    //                 <ToggleLabel htmlFor="notify">Nhận thông báo</ToggleLabel>
-    //             </ToggleContainer>
-    //             <RadioGroup>
-    //                 <RadioLabel>
-    //                     <RadioInput type="radio" name="frequency" value="always" />
-    //                     Luôn luôn
-    //                 </RadioLabel>
-    //                 <RadioLabel>
-    //                     <RadioInput type="radio" name="frequency" value="daily" />
-    //                     Hàng ngày
-    //                 </RadioLabel>
-    //                 <RadioLabel>
-    //                     <RadioInput type="radio" name="frequency" value="weekly" />
-    //                     Hàng tuần
-    //                 </RadioLabel>
-    //             </RadioGroup>
-    //             <SaveButton>Lưu</SaveButton>
-    //         </Container>
-    //     </div>
-
-    // )
-
-
-
-    // const [industry, setIndustry] = useState(null);
-    // const [title, setTitle] = useState(null);
-    // const [location, setLocation] = useState(null);
-
-    // const industries = [
-    //     { value: 'it', label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
-    //     // Add more options here
-    // ];
-
-    // const jobTitles = [
-    //     { value: 'intern', label: 'Thực tập sinh lập trình' },
-    //     // Add more options here
-    // ];
-
-    // const locations = [
-    //     { value: 'hcm', label: 'Hồ Chí Minh' },
-    //     // Add more options here
-    // ];
-
-    // return (
-    //     <FormContainer>
-    //         {/* Left section for 'Mong muốn của bạn' */}
-    //         <Section>
-    //             <Title>Mong muốn của bạn</Title>
-    //             <InputGroup>
-    //                 <Label>Ngành nghề</Label>
-    //                 <Select
-    //                     options={industries}
-    //                     value={industry}
-    //                     onChange={setIndustry}
-    //                     placeholder="Chọn ngành nghề"
-    //                 />
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Chức danh</Label>
-    //                 <Select
-    //                     options={jobTitles}
-    //                     value={title}
-    //                     onChange={setTitle}
-    //                     placeholder="Chọn chức danh"
-    //                 />
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Địa điểm làm việc</Label>
-    //                 <Select
-    //                     options={locations}
-    //                     value={location}
-    //                     onChange={setLocation}
-    //                     placeholder="Chọn địa điểm làm việc"
-    //                 />
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Mức lương (VND)</Label>
-    //                 <div style={{ display: 'flex', gap: '10px' }}>
-    //                     <Input type="number" placeholder="Từ" />
-    //                     <Input type="number" placeholder="Đến" />
-    //                 </div>
-    //             </InputGroup>
-    //             <InputGroup>
-    //                 <Label>Mong muốn của bạn</Label>
-    //                 <Textarea placeholder="Thông tin thêm về công việc..." rows="4" />
-    //             </InputGroup>
-    //         </Section>
-
-    //         {/* Right section for 'Cập nhật thông tin cá nhân' */}
-    //         <Section>
-    //             <Title>Cập nhật thông tin cá nhân</Title>
-    //             {/* Add your personal information form fields here */}
-    //             {/* You can copy the above input groups and modify them as necessary */}
-    //         </Section>
-    //     </FormContainer>
-    // );
-
-
-
-
     const [activeTab, setActiveTab] = useState('desires');
-    const [industry, setIndustry] = useState(null);
-    const [title, setTitle] = useState(null);
-    const [location, setLocation] = useState(null);
+    const user = useSelector((state) => state?.user);
+    const [industry, setIndustry] = useState(user?.industry ? { value: user.industry, label: user.industry } : null);
+    const [title, setTitle] = useState(user?.title ? { value: user.title, label: user.title } : null);
+    const [location, setLocation] = useState(user?.location ? { value: user.location, label: user.location } : null);
+    const [salaryto, setsalaryto] = useState(user?.salaryto || 0);
+    const [salaryfrom, setsalaryfrom] = useState(user?.salaryfrom || 0);
+    const [desire, setdesire] = useState(user?.desire || '');
+    const [name, setName] = useState(user?.name || '')
+    const [email, setEmail] = useState(user?.email || '');
+    const [phone, setPhone] = useState(user?.phone || '');
+    const [address, setAddress] = useState(user?.address || '');
+    const [dateofbirth, setDateofbirth] = useState(user?.dateofbirth || '');
+    const [gender, setGender] = useState(user?.gender ? { value: user.gender, label: user.gender } : null);
+    const [materialstatus, setMaterialstatus] = useState(user?.materialstatus ? { value: user.materialstatus, label: user.materialstatus } : null);
+
+
+
+    const dispatch = useDispatch();
+
+    console.log('data user', user)
 
     const industries = [
-        { label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
-        { value: 'as', label: 'coder' },
-        { value: 'am', label: 'marketing' },
+        { value: 'IT / Phần mềm / IOT / Điện tử viễn thông', label: 'IT / Phần mềm / IOT / Điện tử viễn thông' },
+        { value: 'Corder', label: 'Coder' },
+        { value: 'Marketing', label: 'Marketing' },
         // Add more options here
     ];
+    const onChangeSalaryFrom = (e) => {
+        setsalaryfrom(e.target.value)
+    }
+    const onChangeName = (e) => {
+        setName(e.target.value);
+    }
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value);
+    }
+    const onChangePhone = (e) => {
+        setPhone(e.target.value);
+    }
+    const onChangeAddress = (e) => {
+        setAddress(e.target.value);
+
+    }
+    const onChangeDateOfBirth = (e) => {
+        setDateofbirth(e.target.value);
+    }
+   
+
+    const onChangeSalaryTo = (e) => {
+        setsalaryto(e.target.value)
+    }
+    const onChangeDesire = (e) => {
+        setdesire(e.target.value)
+    }
+    const handleUpdateProfile = () => {
+        dispatch(updateUser({ ...user, industry: industry?.value, location: location?.value, title: title?.value, salaryto: salaryto, salaryfrom: salaryfrom, desire: desire, name: name, phone: phone, address: address, email: email, dateofbirth: dateofbirth, gender: gender?.value, materialstatus: materialstatus?.value }))
+    }
 
     const jobTitles = [
-        { value: 'intern', label: 'Thực tập sinh lập trình' },
-        { value: 'senior', label: ' senior NodeJS' },
-        { value: 'junior', label: 'junior Angular' },
+        { value: 'Thực tập sinh lập trình', label: 'Thực tập sinh lập trình' },
+        { value: 'Senior NodeJS', label: 'Senior NodeJS' },
+        { value: 'junior Angular', label: 'junior Angular' },
         // Add more options here
     ];
 
     const locations = [
-        { value: 'hcm', label: 'Hồ Chí Minh' },
-        { value: 'hn', label: 'Hà Nội' },
-        { value: 'hp', label: 'Hải Phòng' },
+        { value: 'Hồ Chí Minh', label: 'Hồ Chí Minh' },
+        { value: 'Hà Nội', label: 'Hà Nội' },
+        { value: 'Hải Phòng', label: 'Hải Phòng' },
         // Add more options here
     ];
+    const genders = [
+        { value: 'Nam', label: 'Nam' },
+        { value: 'Nữ', label: 'Nữ' },
 
+    ]
+    const MaterialStatus = [
+        { value: 'Độc thân', label: 'Độc thân' },
+        { value: 'Đã kết hôn', label: 'Đã kết hôn' },
+
+    ]
+    useEffect(() => {
+        console.log('industry', industry?.value);
+        console.log('title', title?.value);
+        console.log('location', location?.value);
+        console.log('salaryfrom', salaryfrom + ' ');
+        console.log('salaryto', salaryto + ' ');
+        console.log('desire', desire)
+
+    }, [industry, title, location, salaryfrom, salaryto, desire])
     return (
         <div>
             <HeaderComponent />
@@ -217,63 +148,67 @@ const ProfilePage = () => {
                     <FormFieldd>
                         <label>Mức lương (VND)</label>
                         <div style={{ display: 'flex', gap: '10px' }}>
-                            <input type="number" placeholder="Từ" />
-                            <input type="number" placeholder="Đến" />
+                            <input type="number" placeholder="Từ" value={salaryfrom} onChange={onChangeSalaryFrom} />
+                            <input type="number" placeholder="Đến" value={salaryto} onChange={onChangeSalaryTo} />
                         </div>
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Mong muốn của bạn</label>
-                        <textarea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." rows="4" />
+                        <textarea placeholder="Thông tin thêm về công việc bạn mong muốn tìm và ứng tuyển..." rows="4" onChange={onChangeDesire} value={desire} />
                     </FormFieldd>
 
-                    <SaveButton>Lưu</SaveButton>
+                    <SaveButton onClick={handleUpdateProfile}>Lưu</SaveButton>
                 </Section>
 
                 {/* Cập nhật thông tin cá nhân Section */}
                 <Section isActive={activeTab === 'personal'}>
                     <FormFieldd>
                         <label>Họ và tên *</label>
-                        <input type="text" placeholder="Phạm Gia Huy" />
+                        <input type="text" placeholder="Nhập họ tên" value={name} onChange={onChangeName} />
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Email *</label>
-                        <input type="email" placeholder="huyzxv123@gmail.com" />
+                        <input type="email" placeholder="Nhập email" value={email} onChange={onChangeEmail} />
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Điện thoại *</label>
-                        <input type="text" placeholder="0349369139" />
+                        <input type="text" placeholder="Nhập số điện thoại" value={phone} onChange={onChangePhone} />
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Địa chỉ *</label>
-                        <textarea placeholder="1124-2A Le Duc Tho Street, Ward 13, Go Vap District, Ho Chi Minh City" rows="3" />
+                        <textarea placeholder="Nhập địa chỉ" rows="3" value={address} onChange={onChangeAddress} />
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Ngày sinh *</label>
-                        <input type="date" />
+                        <input type="date" value={dateofbirth} onChange={onChangeDateOfBirth} />
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Giới tính *</label>
-                        <select>
-                            <option value="male">Nam</option>
-                            <option value="female">Nữ</option>
-                        </select>
+                        <Select
+                            options={genders}
+                            value={gender}
+                            onChange={setGender}
+                            placeholder="Chọn giới tính"
+                        />
                     </FormFieldd>
 
                     <FormFieldd>
                         <label>Tình trạng hôn nhân</label>
-                        <select>
-                            <option value="single">Độc thân</option>
-                            <option value="married">Đã kết hôn</option>
-                        </select>
+                        <Select
+                            options={MaterialStatus}
+                            value={materialstatus}
+                            onChange={setMaterialstatus}
+                            placeholder="Tình trạng hôn nhân"
+                        />
                     </FormFieldd>
 
-                    <SaveButton>Lưu</SaveButton>
+                    <SaveButton onClick={handleUpdateProfile}>Lưu</SaveButton>
                 </Section>
             </Container>
             <div style={{ marginTop: '20px' }} >

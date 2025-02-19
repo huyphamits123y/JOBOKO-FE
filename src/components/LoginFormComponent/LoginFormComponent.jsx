@@ -9,6 +9,7 @@ import ButtonComponent from "../ButtonComponent/ButtonComponent";
 import { useMutationHooks } from "../../hooks/useMutationHook";
 import login from '../../components/Assets/login.png';
 import { Modal, Button } from "antd";
+import { jwtDecode } from "jwt-decode";
 import { useDispatch } from 'react-redux'
 import { updateUser } from "../../redux/slides/userSlide";
 // Import CSS của antd
@@ -18,14 +19,18 @@ const LoginFormComponent = () => {
     const [password, setPassword] = useState('')
     const dispatch = useDispatch();
     const [errorMessage, setErrorMessage] = useState('');
+    const [showAlert, setShowAlert] = useState(false);
+    const [showMessage, setShowMessage] = useState(false);
     const onChangeHandleEmail = (value) => {
         setEmail(value)
     }
+    const location = useLocation()
     const navigate = useNavigate();
     const handleNavigateSignUp = () => {
-        navigate('/signup')
+        navigate('/sign-up')
 
     }
+
 
     const onChangeHandlePassword = (value) => {
         setPassword(value)
@@ -37,21 +42,43 @@ const LoginFormComponent = () => {
         }
     )
     const { data, isSuccess, isError, error } = mutation
-    console.log('data', data?.accessToken)
-    const handleGetDetailsUser = async () => {
-        const user = await UserService.getDetailsUser(data?.accessToken)
+    console.log('data huy', data?.accessToken)
+    const handleGetDetailsUser = async (id, access_token) => {
+        const user = await UserService.getDetailsUser(id, access_token)
         console.log('userr', user)
-        dispatch(updateUser({ ...user, access_token: data?.accessToken }))
+        dispatch(updateUser({ ...user?.data, access_token: access_token }))
 
     }
     useEffect(() => {
-        if (isSuccess && data) {
-            handleGetDetailsUser()
-            navigate('/')
-        } if (isError && error) {
-            const backendErrorMessage = error.response?.data?.message || 'Login failed.';
-            setErrorMessage(backendErrorMessage)
-            setIsModalVisible(true)
+        // console.log('location', location)
+
+        if (isSuccess && data?.status === 'OK') {
+            console.log('isSucess', isSuccess)
+            if (location?.state) {
+                navigate(location?.state)
+            } else {
+                navigate('/')
+            }
+            console.log('data huy', data)
+            localStorage.setItem('access_token', JSON.stringify(data?.access_token))
+
+            if (data?.access_token) {
+                const decoded = jwtDecode(data?.access_token)
+                console.log('decoded', decoded)
+                if (decoded?.id) {
+                    handleGetDetailsUser(decoded?.id, data?.access_token);
+                    console.log('decoded id', decoded?.id);
+                    console.log('decoded token', decoded?.access_token)
+
+
+                }
+            }
+        } else {
+            navigate('/sign-in')
+            setErrorMessage('Tài khoản hoặc mật khẩu không chính xác');
+            setShowAlert(true);
+            setShowMessage(true); // 
+
         }
     }, [isSuccess, isError])
     const handleSignin = () => {

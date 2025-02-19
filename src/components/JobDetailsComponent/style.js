@@ -104,4 +104,136 @@ export const InfoGroup = styled.div`
 export const Icon = styled.span`
   margin-right: 8px;
 `;
+export const Overlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
+export const Modal = styled.div`
+  background: white;
+  border-radius: 8px;
+  width: 600px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+`;
+
+export const HeaderCV = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+
+  img {
+    height: 40px;
+  }
+
+  h3 {
+    font-size: 18px;
+    color: #333;
+  }
+
+  button {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #666;
+
+    &:hover {
+      color: red;
+    }
+  }
+`;
+
+export const Content = styled.div`
+  margin-bottom: 20px;
+`;
+
+export const Title = styled.h4`
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 10px;
+`;
+
+export const CVList = styled.div`
+  margin-bottom: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 10px;
+`;
+
+export const CVItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  input {
+    margin-right: 10px;
+  }
+
+  span {
+    flex: 1;
+    font-size: 14px;
+  }
+`;
+
+export const FileUpload = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  label {
+    cursor: pointer;
+    color: #007bff;
+    font-size: 14px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+`;
+
+export const Footer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    flex: 1;
+    margin: 0 5px;
+  }
+`;
+
+export const ButtonCV = styled.button`
+  padding: 10px 20px;
+  background-color: ${(props) => (props.primary ? "#0d6efd" : "#ddd")};
+  color: ${(props) => (props.primary ? "white" : "#333")};
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => (props.primary ? "#0056b3" : "#ccc")};
+  }
+`;
+
+export const CreateCVForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+
+export const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+`;

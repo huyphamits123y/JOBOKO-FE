@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Description, FormField, Header, SaveButton, SubTitle, SupportButton, SupportContainer, SupportOptions, Title, TitleOptions } from "./style";
 import HeaderComponent from "../../components/HeaderComponent/HeaderComponent";
 import background1 from '../../components/Assets/background1.png';
@@ -6,7 +6,52 @@ import FooterComponent from "../../components/FooterComponent/FooterComponent";
 import { GoMail } from "react-icons/go";
 import { TiPhoneOutline } from "react-icons/ti";
 import SearchComponent from "../../components/SearchComponent/SearchComponent";
+import Select from 'react-select';
+import { useDispatch, useSelector } from "react-redux";
+import { updateUser } from "../../redux/slides/userSlide";
 const UpdateProfilePage = () => {
+    const user = useSelector((state) => state?.user);
+    const [name, setName] = useState(user?.name || '')
+    const [email, setEmail] = useState(user?.email || '');
+    const [phone, setPhone] = useState(user?.phone || '');
+    const [address, setAddress] = useState(user?.address || '');
+    const [dateofbirth, setDateofbirth] = useState(user?.dateofbirth || '');
+    const [gender, setGender] = useState(user?.gender ? { value: user.gender, label: user.gender } : null);
+    const [materialstatus, setMaterialstatus] = useState(user?.materialstatus ? { value: user.materialstatus, label: user.materialstatus } : null);
+    const dispatch = useDispatch();
+    const genders = [
+        { value: 'Nam', label: 'Nam' },
+        { value: 'Nữ', label: 'Nữ' },
+
+    ]
+    const MaterialStatus = [
+        { value: 'Độc thân', label: 'Độc thân' },
+        { value: 'Đã kết hôn', label: 'Đã kết hôn' },
+
+    ]
+
+    const onChangeName = (e) => {
+        setName(e.target.value);
+    }
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value);
+    }
+    const onChangePhone = (e) => {
+        setPhone(e.target.value);
+    }
+    const onChangeAddress = (e) => {
+        setAddress(e.target.value);
+
+    }
+    const onChangeDateOfBirth = (e) => {
+        setDateofbirth(e.target.value);
+    }
+
+
+
+    const handleUpdateProfile = () => {
+        dispatch(updateUser({ ...user, name: name, phone: phone, address: address, email: email, dateofbirth: dateofbirth, gender: gender?.value, materialstatus: materialstatus?.value }))
+    }
     return (
         <div>
             <HeaderComponent />
@@ -26,48 +71,52 @@ const UpdateProfilePage = () => {
                 {/* Form Fields */}
                 <FormField>
                     <label>Họ và tên *</label>
-                    <input type="text" placeholder="Phạm Gia Huy" />
+                    <input type="text" placeholder="Nhập họ tên" value={name} onChange={onChangeName} />
                 </FormField>
 
                 <FormField>
                     <label>Email *</label>
-                    <input type="email" placeholder="huyzxv123@gmail.com" />
+                    <input type="email" placeholder="Nhập email" value={email} onChange={onChangeEmail} />
                 </FormField>
 
                 <FormField>
                     <label>Điện thoại *</label>
-                    <input type="text" placeholder="0349369139" />
+                    <input type="text" placeholder="Nhập số điện thoại" value={phone} onChange={onChangePhone} />
                 </FormField>
 
                 <FormField>
                     <label>Địa chỉ *</label>
-                    <textarea placeholder="1124-2A Le Duc Tho Street, Ward 13, Go Vap District, Ho Chi Minh City" rows="3"></textarea>
+                    <textarea placeholder="Nhập địa chỉ" rows="3" value={address} onChange={onChangeAddress} />
                 </FormField>
 
-                <FormField className="inline">
-                    <div>
-                        <label>Ngày sinh *</label>
-                        <input type="date" />
-                    </div>
-                    <div>
-                        <label>Giới tính *</label>
-                        <select>
-                            <option value="male">Nam</option>
-                            <option value="female">Nữ</option>
-                        </select>
-                    </div>
+                <FormField>
+                    <label>Ngày sinh *</label>
+                    <input type="date" value={dateofbirth} onChange={onChangeDateOfBirth} />
+                </FormField>
+
+                <FormField>
+                    <label>Giới tính *</label>
+                    <Select
+                        options={genders}
+                        value={gender}
+                        onChange={setGender}
+                        placeholder="Chọn giới tính"
+                    />
                 </FormField>
 
                 <FormField>
                     <label>Tình trạng hôn nhân</label>
-                    <select>
-                        <option value="single">Độc thân</option>
-                        <option value="married">Đã kết hôn</option>
-                    </select>
+                    <Select
+                        options={MaterialStatus}
+                        value={materialstatus}
+                        onChange={setMaterialstatus}
+                        placeholder="Tình trạng hôn nhân"
+                    />
                 </FormField>
 
-                {/* Save Button */}
-                <SaveButton>LƯU THÔNG TIN</SaveButton>
+                <SaveButton onClick={handleUpdateProfile}>Lưu</SaveButton>
+
+
             </Container>
             <SupportContainer>
                 <TitleOptions>HỖ TRỢ ỨNG VIÊN</TitleOptions>

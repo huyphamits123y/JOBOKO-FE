@@ -35,16 +35,23 @@ const HeaderComponent = () => {
                 <WrapperDropdownJob className="dropdown-job">
                     <div>
                         <h4>Tiện ích cho bạn</h4>
-                        <a href="#"><span className="icon">🔍</span>Tìm việc làm</a>
-                        <a href="#"><span className="icon">📊</span>Việc làm của tôi</a>
-                        <a href="#"><span className="icon">💼</span>Việc làm theo ngành nghề</a>
+                        <a href="/findjobpage"><span className="icon">🔍</span>Tìm việc làm</a>
+                        <a href="/searchjob"><span className="icon">📊</span>Việc làm của tôi</a>
+                        <a href="professionPage"><span className="icon">💼</span>Việc làm theo ngành nghề</a>
                         <a href="#"><span className="icon">💰</span>Việc làm bán thời gian/thực tập</a>
 
                     </div>
                 </WrapperDropdownJob>
             </div>
             <div className="menu-item">
-                <a href="#">CV & cover letter</a>
+                <a href="#">CV & COVER LETTERLETTER</a>
+                <WrapperDropdownJob className="dropdown-job">
+                    <div>
+                        <h4>Quản lý CV</h4>
+                        <a href="/managercvpage"><span className="icon">📄</span>CV xin việc/Cover letter</a>
+
+                    </div>
+                </WrapperDropdownJob>
             </div>
             <div className="menu-item">
                 <a href="#">Tiện ích/Cẩm nang</a>
@@ -83,8 +90,8 @@ const HeaderComponent = () => {
                 // </div>
                 <div className="menu-item">
                     <div className="auth-links" style={{ display: 'flex' }}>
-                        <CgProfile style={{ marginTop: '23px' }} />
-                        <a href="#login">  {user?.name}</a>
+                        <CgProfile style={{ marginTop: '17px', width: '30px', height: '30px', cursor: 'pointer' }} />
+                        <a style={{ color: 'black' }}>{user?.email}</a>
 
                     </div>
                     <WrapperDropdownJob className="dropdown-job">
@@ -101,28 +108,28 @@ const HeaderComponent = () => {
                         <hr />
                         <div style={{ display: 'flex' }}>
                             <CgProfile style={{ marginTop: '10px', width: '20px', height: '20px' }} />
-                            <a href="#" style={{ marginLeft: '10px' }} onClick={() => navigate("/profile")}><span ></span>Trang cá nhân</a>
+                            <a style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => navigate("/profile")}><span ></span>Trang cá nhân</a>
                         </div>
                         <div style={{ display: 'flex' }}>
                             <SlNote style={{ marginTop: '10px', width: '20px', height: '20px' }} />
-                            <a href="#" style={{ marginLeft: '10px' }} onClick={() => navigate("/updateprofile")}><span ></span>Cập nhật thông tin</a>
+                            <a style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => navigate("/updateprofile")}><span ></span>Cập nhật thông tin</a>
                         </div>
                         <div style={{ display: 'flex' }}>
                             <IoPersonAddSharp style={{ marginTop: '10px', width: '20px', height: '20px' }} />
-                            <a href="#" style={{ marginLeft: '10px' }} onClick={() => navigate("/updaterequirejob")}><span ></span>Cập nhật yêu cầu tìm việc</a>
+                            <a style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => navigate("/updaterequirejob")}><span ></span>Cập nhật yêu cầu tìm việc</a>
                         </div>
                         <div style={{ display: 'flex' }}>
                             <PiPackageDuotone style={{ marginTop: '10px', width: '20px', height: '20px' }} />
-                            <a href="#" style={{ marginLeft: '10px' }} onClick={() => navigate("/manager")}><span ></span>Quản lí ứng tuyển</a>
+                            <a style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={() => navigate("/manager")}><span ></span>Quản lí ứng tuyển</a>
                         </div>
                         <hr />
                         <div style={{ display: 'flex' }}>
                             <ImProfile style={{ marginTop: '10px', width: '20px', height: '20px' }} />
-                            <a href="#" style={{ marginLeft: '10px' }}><span ></span>Đăng tuyển và tìm hồ sơ</a>
+                            <a style={{ marginLeft: '10px', cursor: 'pointer' }}><span ></span>Đăng tuyển và tìm hồ sơ</a>
                         </div>
                         <div style={{ display: 'flex' }}>
                             <LuLogOut style={{ marginTop: '10px', width: '20px', height: '20px' }} />
-                            <a href="#" style={{ marginLeft: '10px' }} onClick={handleLogout}><span ></span>Đăng xuất</a>
+                            <a style={{ marginLeft: '10px', cursor: 'pointer' }} onClick={handleLogout}><span ></span>Đăng xuất</a>
                         </div>
 
                     </WrapperDropdownJob>
@@ -132,9 +139,13 @@ const HeaderComponent = () => {
 
 
             ) : (
+                // <div className="auth-links">
+                //     <a href="/signin" onClick={() => navigate("/signin")}>Đăng nhập</a>
+                //     <a href="/signup" onClick={() => navigate("/signup")}>Đăng ký</a>
+                // </div>
                 <div className="auth-links">
-                    <a href="#" onClick={() => navigate("/signin")}>Đăng nhập</a>
-                    <a href="#" onClick={() => navigate("/signup")}>Đăng ký</a>
+                    <a href="/sign-in">Đăng nhập</a>
+                    <a href="/sign-up">Đăng ký</a>
                 </div>
             )}
         </WrapperNav>

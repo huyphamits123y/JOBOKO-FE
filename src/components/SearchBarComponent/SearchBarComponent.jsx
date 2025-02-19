@@ -4,6 +4,8 @@ import { AdvancedFilter, DropdownButton, DropdownContainer, DropdownItem, Dropdo
 import { WrapperDropdownJob } from '../HeaderComponent/style';
 
 import { FaChevronDown } from "react-icons/fa";
+import { useNavigate } from 'react-router-dom';
+import ButtonSearchComponent from '../ButtonSearchComponent/ButtonSearchComponent';
 const SearchBarComponent = () => {
 
     const provinces = [
@@ -20,6 +22,7 @@ const SearchBarComponent = () => {
         setSelectedProvince(province);
         setIsOpen(false);
     };
+    const navigate = useNavigate();
     return (
         // <WrapperSearchBar>
         //     <input
@@ -82,7 +85,17 @@ const SearchBarComponent = () => {
                 </DropdownContainer>
 
 
-                <SearchButton>TÌM VIỆC</SearchButton>
+                <SearchButton onClick={() => navigate('/searchjob')}>TÌM VIỆC</SearchButton>
+                {/* <ButtonSearchComponent
+
+                    onClick={() => navigate('/searchjob')}
+                    size={40}
+
+
+
+                    textButton={'TÌM VIỆC'}
+
+                ></ButtonSearchComponent> */}
 
 
             </SearchBox>
